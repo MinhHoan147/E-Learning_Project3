@@ -1,7 +1,7 @@
 # E-Learning_Project3
 
 #Task done:
-Sign Up
+- [Sign Up]
 Log In
 Log Out
 Preview coure when user does not log in
