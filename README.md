@@ -1,6 +1,6 @@
 # E-Learning_Project3
 
-##Task done:
+#Task done:
 Sign Up
 Log In
 Log Out
@@ -13,6 +13,6 @@ Embed chatbot to support users 24/24
 Admin site: Migrate necessary models
 Admin site: CRUD all models
 
-##Task in progress:
+#Task in progress:
 Blog Site
 Recommend system
