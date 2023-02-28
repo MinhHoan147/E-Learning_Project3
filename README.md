@@ -9,9 +9,11 @@
 - Enrroll paid courrse
 - Reset Password
 - Quizz section
+- Watch video section
 - Embed chatbot to support users 24/24
 - Admin site: Migrate necessary models
 - Admin site: CRUD all models
+- Update account information
 
 ## Task in progress:
 - Blog Site
