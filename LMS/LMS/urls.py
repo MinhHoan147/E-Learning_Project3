@@ -25,6 +25,12 @@ urlpatterns = [
 
     path('about', views.ABOUT_US,name='about_us'),
 
+    path('coming_soon', views.COMING_SOON,name='coming_soon'),
+
+    path('success', views.SUCCESS,name='success'),
+
+    path('event', views.EVENT,name='event'),
+
     path('accounts/register', user_login.REGISTER, name='register'),
 
     path('accounts/', include('django.contrib.auth.urls')),
@@ -48,5 +54,6 @@ urlpatterns = [
     path('course/<slug:course_slug>/<slug:quizz_slug>/save',
          views.save_quiz_view, name='save_quiz_view'),
 
+    path('blog', views.BLOG, name='blog'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
