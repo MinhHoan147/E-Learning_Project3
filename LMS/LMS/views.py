@@ -18,11 +18,13 @@ def BASE(request):
 def HOME(request):
     category = Categories.objects.all().order_by('id')[0:5]
     course = Course.objects.filter(status = 'PUBLISH').order_by('-id')
+    author = Author.objects.all()
     user = request.user
     context = {
         'category':category,
         'course':course,
         'user':user,
+        'author': author,
     }
     return render(request, 'Main/home.html', context)
 
@@ -56,6 +58,16 @@ def ABOUT_US(request):
         'course': course,
     }
     return render(request, 'Main/about_us.html', context)
+
+def COMING_SOON(request):
+    # category = Categories.objects.all().order_by('id')[0:5]
+    # course = Course.objects.filter(status='PUBLISH').order_by('-id')
+
+    context = {
+        # 'category': category,
+        # 'course': course,
+    }
+    return render(request, 'Main/coming_soon.html', context)
 
 def filter_data(request):
     categories = request.GET.getlist('category[]')
@@ -125,14 +137,20 @@ def COURSE_DETAILS(request, slug):
         'user':user,
     }
     if action == 'comment':
+        print("REQUEST")
+        print(request)
         if request.method == 'POST':
             title = request.POST.get('title')
             content = request.POST.get('content')
-            print(title, content)
+            # course = request.POST.get('courseTitle')
+            print("------------------")
+            print(title, content, course)
+            print("------------------")
             commented = Comment(
                 user = request.user,
                 course_review = title,
                 comment = content,
+                course = course
             )
             commented.save()
             messages.success(request, 'Comment successfully')
@@ -141,6 +159,13 @@ def COURSE_DETAILS(request, slug):
 
 def PAGE_NOT_FOUND(request):
     return render(request, 'error/404.html')
+
+def SUCCESS(request):
+    payment = Payment.objects.all()
+    context = {
+        'payment': payment
+    }
+    return render(request, 'checkout/order_completed.html', context)
 
 def CHECKOUT(request,slug):
     course = Course.objects.get(slug = slug)
@@ -197,7 +222,7 @@ def CHECKOUT(request,slug):
             )
             course.save()
             messages.success(request, 'Enrolled Successfully!')
-            return redirect('my-course')
+            return redirect('success')
 
     context = {
         'course':course,
@@ -218,6 +243,11 @@ def MY_COURSE(request):
 def WATCH_COURSE(request, slug):
     course = Course.objects.filter(slug =slug)
     lecture = request.GET.get('lecture')
+    print("-----------------------")
+    print(lecture)
+    print(type(lecture))
+    print("-----------------------")
+    result = Result.objects.all()
     video = None
     if lecture:
         video = Video.objects.get(id=lecture)
@@ -226,10 +256,21 @@ def WATCH_COURSE(request, slug):
         course = course.first()
     else:
         return redirect('404')
+    
+    user = request.user
+    if user.id == None:
+        check_enroll = None
+    else:
+        try :
+            check_enroll = UserCourse.objects.get(user=request.user,course=course)
+        except UserCourse.DoesNotExist:
+            check_enroll = None
+
     context = {
         'course':course,
         'video':video,
-        
+        'check_enroll': check_enroll,
+        'result': result,
     }
     return render(request,'course/watch-course.html',context)
 
@@ -304,19 +345,15 @@ def save_quiz_view(request, course_slug, quizz_slug):
                     else:
                         if a.correct:
                             correct_answer = a.text
-
                 results.append({str(q): {'correct_answer': correct_answer,'answered': a_selected}})
             else:
                 results.append({str(q): {'not answered'}})
-        
-        if score >= quiz.require_passing_score:
+        if score > (quiz.require_passing_score - 1):
             passed = True
         else:
             passed = False
-
         already_done = False            
         add_new = False
-
         try :
             a = Result.objects.get(quiz=quiz, user=user, course=course)
             already_done = True
@@ -340,4 +377,23 @@ def save_quiz_view(request, course_slug, quizz_slug):
             return JsonResponse({'passed': True, 'score': score, 'results': results})
         else:
             return JsonResponse({'passed': False, 'score': score, 'results': results})
-    
+
+def BLOG(request):
+    # category = Categories.get_all_category(Categories)
+    # course = UserCourse.objects.filter(user = request.user)
+
+    # context = {
+    #     'course':course,
+    #     'category': category,
+    # }
+    return render(request,'registration/blog.html')
+
+def EVENT(request):
+    # category = Categories.get_all_category(Categories)
+    # course = UserCourse.objects.filter(user = request.user)
+
+    # context = {
+    #     'course':course,
+    #     'category': category,
+    # }
+    return render(request,'Main/event_single.html')
