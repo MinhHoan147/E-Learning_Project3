@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <title>Instructor · Home</title>
+</head>
+<body>  
+   
+  <body>
+    <div>
+      <h1 style="color: #9796F0; text-align: center;">Course Details</h1>
+    </div>
+
+    <hr/>
+    
+    <form method="POST" >
+      {% csrf_token %}
+      <div class="container register-form" style="margin-left:20%; margin-right:10%; margin-top:3%;">
+        <div class="form">
+          <div class="note">
+              <p style="font-size: 25px;">Fill in the details of the video lecture</p>
+          </div>
+          <div class="form-content">
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="form-group">
+                <h4>Course title</h4>
+                   <input type="text" disabled value="{{course.title}}">
+                </div>
+
+                <div class="form-group">
+                <h4>Author</h4>
+                  <input type="text" disabled value="{{course.user}}">
+               </div>
+
+               <div class="form-group">
+                <h4>Category</h4>
+                  <input type="text" disabled value="{{course.category}}">
+               </div>
+
+              <div class="form-group">
+                <h4>Level</h4>
+                <input type="text" disabled value="{{course.level}}">
+              </div>
+
+              <div class="form-group">
+                <h4>Description</h4>
+                <textarea  type="textarea" disabled>{{course.description}}</textarea>
+              </div>
+
+              <div class="form-group">
+                <h4>Price</h4>
+                <input type="text" disabled value="{{course.price}}">
+              </div>
+
+              <div class="form-group">
+                <h4>Discount</h4>
+                <input type="text" disabled value="{{course.discount}}">
+              </div>
+
+              <div class="form-group">
+                <h4>Language</h4>
+                <input type="text" disabled value="{{course.language}}">
+              </div>
+
+              <div class="form-group">
+                <h4>Certificate</h4>
+                <input type="text" disabled value="{{course.certificate}}">
+              </div>
+              </div>
+    
+            </div>
+            <button type="submit" class="btnSubmit">Submit</button>
+          </div>
+        </div>
+      </div>
+
+    <br>
+    <a class="btn btn-primary" href="{% url 'instructor-course' %}">Back</a>
+  </body>
+  <style>
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: #0275d8;
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+
+    .menu {
+      top: 50px;
+    }
+
+    .form-group{
+        padding-bottom:3px;
+    }
+
+    input{
+      width: 100%;
+    }
+
+    textarea{
+      width: 100%;
+      height: 200px;
+    }
+
+    h4{
+      font-weight: bold;
+    }
+  </style>
+</body>
+</html>
+<!DOCTYPE html>

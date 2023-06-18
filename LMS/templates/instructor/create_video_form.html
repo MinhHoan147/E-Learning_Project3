@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <title>Instructor · Home</title>
+</head>
+<body>  
+   
+  <body>
+    <h1 style="color: #9796F0;">Add New Video Lecture Form</h1>
+    <hr />
+
+    <form method="POST" >
+      {% csrf_token %}
+      <div class="container register-form" style="margin-left:20%; margin-right:10%; margin-top:8%;">
+        <div class="form">
+          <div class="note">
+              <p style="font-size: 25px;">Fill in the details of the video lecture</p>
+          </div>
+          <div class="form-content">
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="form-group">Serial number
+                  {% render_field createVideoForm.serial_number class="form-control" placeholder="Serial number" %}
+                </div>
+
+                <!-- <div class="form-group">Thumbnail
+                  {% render_field createVideoForm.thumbnail class="form-control" placeholder="Thumbnail" %}
+                </div> -->
+
+                <div class="form-group">Course
+                    {% render_field createVideoForm.course class="form-control" placeholder="Course" %}
+                  </div>
+
+                <div class="form-group">Lessson
+                  {% render_field createVideoForm.lesson class="form-control" placeholder="Lessson" %}
+                </div>
+
+                <div class="form-group">Title
+                  {% render_field createVideoForm.title class="form-control" placeholder="Title" %}
+                </div>
+                
+                <div class="form-group">Description
+                  {% render_field createVideoForm.description class="form-control" placeholder="Description" %}
+                </div>
+
+                <div class="form-group">Youtube id
+                  {% render_field createVideoForm.youtube_id class="form-control" placeholder="Youtube id" %}
+                </div>
+
+                <div class="form-group">Time duration
+                  {% render_field createVideoForm.time_duration class="form-control" placeholder="Time duration" %}
+                </div>
+
+                <div class="form-group">Preview
+                  {% render_field createVideoForm.preview class="form-control" placeholder="preview" %}
+                </div>
+
+              </div>
+    
+            </div>
+            <button type="submit" class="btnSubmit">Submit</button>
+          </div>
+        </div>
+      </div>
+
+    <br>
+    <a class="btn btn-primary" href="{% url 'instructor-video' %}">Back</a>
+  </body>
+  <style>
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: #0275d8;
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+
+    .menu {
+      top: 50px;
+    }
+
+    .form-group{
+        padding-bottom:3px;
+    }
+  </style>
+</body>
+</html>
+<!DOCTYPE html>
