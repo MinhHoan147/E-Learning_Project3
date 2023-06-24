@@ -58,9 +58,8 @@ def DO_LOGIN(request):
         myUser = EmailBackEnd.authenticate(request,
                                          email=email,
                                          password=password)
+        
         myRole = UserRole.objects.filter(user = myUser)
-        print(myRole)
-        print(myRole[0].role)
         if myUser != None and email != "" and password != "" and role != "":
                 if myUser.is_active:
                     if str(myRole[0].role) == role:
@@ -101,7 +100,7 @@ def DO_LOGIN(request):
 #             return redirect('loginBlog')
 
 def PROFILE(request):
-    return render(request,'registration/profile.html')
+    return candy.render(request,'registration/profile.html')
 
 def PROFILE_UPDATE(request):
     if request.method == "POST":

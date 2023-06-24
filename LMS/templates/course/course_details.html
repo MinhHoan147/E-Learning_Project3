@@ -306,21 +306,7 @@
                                 </div> -->
                                 <div
                                     class="d-flex align-items-center overflow-auto overflow-md-visible flex-shrink-all">
-                                    {% for result in quizz.result_set.all %}
-                                    {% if result.user == user %}
-                                    {% if result is not None %}
-                                    {% if result.passed == True %}
-                                    <div class="badge me-5 font-size-sm fw-normal py-2"
-                                        style="background-color: #9cf6bf; color:black;">{{result.score}}/100, attempt:
-                                        {{result.attempt}}</div>
-                                    {% else %}
-                                    <div class="badge me-5 font-size-sm fw-normal py-2"
-                                        style="background-color: #F55050; color:white;">{{result.score}}/100, attempt:
-                                        {{result.attempt}}</div>
-                                    {% endif %}
-                                    {% endif %}
-                                    {% endif %}
-                                    {% endfor %}
+                                    
                                     {% if check_enroll is not None %}
                                     <!-- Button trigger modal -->
 
@@ -346,8 +332,8 @@
                                     <!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
                                         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                         aria-hidden="true"> -->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
+                                    <div class="modal-dialog" >
+                                        <div class="modal-content" style="width: 720px;">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="staticBackdropLabel">
                                                     <b>{{quizz.topic}}</b>
@@ -356,27 +342,52 @@
                                                     aria-label="Close">
                                                 </button> -->
                                             </div>
+                                            
                                             <div class="modal-body">
+                                                {% for result in quizz.result_set.all %}
+                                                {% if result.user == user %}
+                                                {% if result is not None %}
+                                                {% if result.passed == True %}
+                                                    <span style="color: black;">Your result: </span>
+                                                    <div class="badge me-5 font-size-sm fw-normal py-2"
+                                                        style="background-color: #9cf6bf; color:black; margin-bottom: 4px;">{{result.score}}/100 - attempt:
+                                                    {{result.attempt}}</div>
+                                                {% else %}
+                                                    <span style="color: black;">Your result: </span>
+                                                    <div class="badge me-5 font-size-sm fw-normal py-2"
+                                                         style="background-color: #F55050; color:white; margin-bottom: 4px;">{{result.score}}/100 - attempt:
+                                                {{result.attempt}}</div>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endif %}
+                                                {% endfor %}
+                                                <br>
                                                 <span style="color: black;">Number of questions:</span>
-                                                <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2">
+                                                <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2" style="margin-bottom: 4px;">
                                                     {{quizz.number_of_questions}} question</div>
                                                 <br>
                                                 <span style="color: black;">Time:</span>
-                                                <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2">
+                                                <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2" style="margin-bottom: 4px;">
                                                     {{quizz.time_duration}} min</div>
                                                 <br>
                                                 <span style="color: black;">Allow attempt times:</span>
-                                                <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2">
+                                                <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2" style="margin-bottom: 4px;">
                                                     {{quizz.total_attempts}}</div>
                                             </div>
                                             <div class="modal-footer">
                                                     {% if quizz.result_set.get.attempt == quizz.total_attempts %}
-                                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">       
-                                                            You have attempted enough times
+                                                    <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">       
+                                                                    Full access
                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <!-- <span aria-hidden="true">&times;</span> -->
+                                                        <span aria-hidden="true">&times;</span>
                                                     </button>
-                                                    </div>
+                                                    </div> -->
+                                                    <button class="btn-block btn btn-warning"
+                                                        href="">
+                                                        <div class="ms-4">
+                                                            Full access
+                                                        </div>
+                                                    </button>
                                                     {% else %}
                                                     <a class="btn-block btn btn-primary"
                                                         href="/course/{{course.slug}}/{{quizz.slug}}">

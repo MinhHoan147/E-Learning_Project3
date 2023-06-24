@@ -10,7 +10,7 @@ urlpatterns = [
 
     *candy.path('base', views.BASE,name='base'),
 
-    path('404', views.PAGE_NOT_FOUND, name='404'),
+    *candy.path('404', views.PAGE_NOT_FOUND, name='404'),
 
     *candy.path('', views.HOME,name='home'),
 
@@ -18,13 +18,13 @@ urlpatterns = [
 
     # path('notes/<str:pk>/', views.getNote, name="note"),
 
-    path('courses', views.SINGLE_COURSE,name='single_course'),
+    *candy.path('courses', views.SINGLE_COURSE,name='single_course'),
 
     *candy.path('courses/filter-data',views.filter_data,name="filter-data"),
 
     *candy.path('course/<slug:slug>',views.COURSE_DETAILS,name='course_details'),   
 
-    path('search',views.SEARCH_COURSE,name='search_course'),
+    *candy.path('search',views.SEARCH_COURSE,name='search_course'),
 
     *candy.path('contact', views.CONTACT_US,name='contact_us'),
 
@@ -34,9 +34,9 @@ urlpatterns = [
 
     *candy.path('coming_soon', views.COMING_SOON,name='coming_soon'),
 
-     *candy.path('success', views.SUCCESS,name='success'),
+    *candy.path('success', views.SUCCESS,name='success'),
 
-    path('event', views.EVENT,name='event'),
+    *candy.path('event', views.EVENT,name='event'),
 
     *candy.path('accounts/register', user_login.REGISTER, name='register'),
     *candy.path('accounts/learner-register', user_login.LEARNER_SIGNUP, name='learner_register'),
@@ -50,7 +50,7 @@ urlpatterns = [
 
     # path('patientsignup/', views.InstructorSi, name="patientsignup"),
 
-    path('accounts/profile', user_login.PROFILE, name='profile'),
+    *candy.path('accounts/profile', user_login.PROFILE, name='profile'),
 
     path('accounts/profile/update', user_login.PROFILE_UPDATE, name='profile_update'),
 
@@ -94,8 +94,10 @@ urlpatterns = [
     path('instructor/search/quiz',views.INSTRUCTOR_SEARCH_QUIZZ,name='instructor_search_quiz'),
     path('instructor/search/video-lecture',views.INSTRUCTOR_SEARCH_VIDEO_LECTURE,name='instructor_search_video_lecture'),
 
+    # path('edit-note',views.EDIT_NOTE,name='edit_note'),
     path('edit-note',views.EDIT_NOTE,name='edit_note'),
     path('create-note',views.CREATE_NOTE,name='create_note'),
+    path('delete-note',views.DELETE_NOTE,name='delete_note'),
 
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -1,22 +1,27 @@
-{% extends 'instructor/instructor_base.html' %}
+{% extends 'instructor_base.html' %}
+{% block title %}Instructor Lessons{% endblock %}
+{% block content %}
 <body>
-  {% block content_dashboard %}
-
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+     <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
      <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <title>Instructor · Home</title>
+    <title>Instructor · Lessons</title>
 
     <style>
-      .container{
+      /* .container{
           margin-right: 0px;
           margin-bottom: 0px;
           width: 80%;
-        }
+        } */
+      body{
+          background-image: url('../../static/assets/img/illustrations/illustration-7.svg') !important; 
+          background-repeat: no-repeat; 
+          background-size: cover;
+      }
       div.scroll {
           background-color: #ffffff;
           width: 100%;
@@ -28,9 +33,9 @@
   </head>
 
   <div class="container col-sm">
-    <div class="panel panel-primary" style="border-width: 3px; border-radius: 6px;">
-      <div class="panel-heading">
-        <h6 class="panel-title" style="text-align: center ;font-weight: bold; font-size: 30px;">My Lessons</h6>
+    <div class="panel panel-primary"  style="border-width: 3px; border-radius: 6px; border-color: #052d71;">
+      <div class="panel-heading" style="background: linear-gradient( #052d71  , #052d71 );">
+        <h6 class="panel-title" style="text-align: center ;font-weight: bold; font-size: 30px; color: #ffffff;">My Lessons</h6>
       </div>
 
       <div class="scroll">
@@ -40,7 +45,7 @@
             <div class="form-group mx-sm-3 mb-2">
               <input type="text" class="form-control" id="inputPassword2" placeholder="Search bar" name="query">
             </div>
-            <button type="submit" class="btn btn-primary mb-2"><i class="fa-solid fa-magnifying-glass fa-lg"></i></button>
+            <button type="submit" class="btn btn-primary mb-2" style="background: linear-gradient( #36d1dc   , #5b86e5 );"><i class="fa-solid fa-magnifying-glass fa-lg"></i></button>
             <!-- <div>
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="searchType" id="inlineRadio1" value="option1">
@@ -55,6 +60,18 @@
                 <label class="form-check-label" for="inlineRadio3">3</label>
               </div>
             </div> -->
+            <div class="filter-data">
+              <span><b>Status</b>:</span>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" name="status" id="status" value="All" checked>All
+              </label>
+              <label class="radio-inline">
+                <input  class="form-check-input" type="radio" name="status" id="status" value="Confirmed" >Confirmed
+              </label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" name="status" id="status" value="Pending" >Pending
+              </label>
+            </div>
           </form>
       </div>
       <table class="table table-hover" id="dev-table">
@@ -62,6 +79,7 @@
           <tr style="font-weight: bold; font-size: 16px;">
             <th>Name</th>
             <th>Course</th>
+            <th>Status</th>
           </tr>
         </thead>
         {% for a in lessons %}
@@ -70,9 +88,9 @@
               <td><a href="">{{b.name}}</a></td>
               <td>{{b.course}}</td>
               {%if b.status == True%}
-              <td><span class="label label-primary">Confirmed</span></td>
+              <td><span class="label label-success">Confirmed</span></td>
               {% else %}
-              <td><span class="label label-success">Pending</span></td>
+              <td><span class="label label-warning">Pending</span></td>
               {% endif %}
               </tr>
           {% endfor %}
@@ -80,8 +98,9 @@
       </table>
     </div>
     </div>
-    <a href="{% url 'create_lesson_form' %}" class="btn btn-primary">Create new Lesson <i class="fa-solid fa-plus"></i></a>
+    <a href="{% url 'create_lesson_form' %}" class="btn btn-primary" style="background-color: #052d71;">Create new Lesson <i class="fa-solid fa-plus"></i></a>
 
   </div>
-  {% endblock content_dashboard %}
+
 </body>
+{% endblock %}

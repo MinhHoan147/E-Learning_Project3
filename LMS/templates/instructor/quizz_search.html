@@ -1,6 +1,8 @@
-{% extends 'instructor/instructor_base.html' %}
+{% extends 'instructor_base.html' %}
+{% block title %}Instructor Lessons{% endblock %}
+{% block content %}
 <body>
-  {% block content_dashboard %}
+
 
   <head>
     <meta charset="UTF-8" />
@@ -12,12 +14,11 @@
     <title>Instructor · Home</title>
 
     <style>
-      .container{
-          margin-right: 0px;
-          margin-bottom: 0px;
-          width: 80%;
-        }
-
+      body{
+          background-image: url('../../static/assets/img/illustrations/illustration-7.svg') !important; 
+          background-repeat: no-repeat; 
+          background-size: cover;
+      }
       div.scroll {
           background-color: #ffffff;
           width: 100%;
@@ -25,23 +26,40 @@
           overflow-x: hidden;
           overflow-y: auto;
         }
+      .filter-data {
+          margin-top: 8px;
+        }
     </style>
   </head>
 
   <div class="container col-sm">
-    <div class="panel panel-primary" style="border-width: 3px; border-radius: 6px;">
-      <div class="panel-heading">
-        <h6 class="panel-title" style="text-align: center ;font-weight: bold; font-size: 30px;">My Quizzes</h6>
+    <div class="panel panel-primary"  style="border-width: 3px; border-radius: 6px; border-color: #052d71;">
+      <div class="panel-heading" style="background: linear-gradient( #052d71  , #052d71 );">
+        <h6 class="panel-title" style="text-align: center ;font-weight: bold; font-size: 30px; color: #ffffff;">My Quizzes</h6>
       </div>
 
-      <div class="scroll">
+      <div class="scroll" >
         <div class="card card-body p-4 mt-7 shadow-dark" style="float: right; margin: 10px 5px;">
           <!-- Search -->
           <form class="w-100 form-inline" method="get" action="{% url 'instructor_search_quiz'%}">
             <div class="form-group mx-sm-3 mb-2">
               <input type="text" class="form-control" id="inputPassword2" placeholder="Search bar" name="query">
             </div>
-            <button type="submit" class="btn btn-primary mb-2"><i class="fa-solid fa-magnifying-glass fa-lg"></i></button>
+            <button type="submit" class="btn btn-primary mb-2" style="background: linear-gradient( #36d1dc   , #5b86e5 );"><i class="fa-solid fa-magnifying-glass fa-lg"></i></button>
+            
+            <div class="filter-data">
+              <span><b>Status</b>:</span>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" name="status" id="status" value="All" checked>All
+              </label>
+              <label class="radio-inline">
+                <input  class="form-check-input" type="radio" name="status" id="status" value="Confirmed">Confirmed
+              </label>
+              <label class="radio-inline">
+                <input class="form-check-input" type="radio" name="status" id="status" value="Pending" >Pending
+              </label>
+            </div>
+            
             <!-- <div>
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="searchType" id="inlineRadio1" value="option1">
@@ -66,6 +84,7 @@
             <th>Duration</th>
             <th>Passing Score</th>
             <th>Level</th>
+            <th>Status</th>
           </tr>
         </thead>
         {% for a in quizzes %}
@@ -87,7 +106,8 @@
       </table>
     </div>
     </div>
-      <a href="{% url 'create_quiz_form' %}" class="btn btn-primary">Create new Quiz <i class="fa-solid fa-plus"></i></a>
+      <a href="{% url 'create_quiz_form' %}" class="btn btn-primary" style="background-color: #052d71;">Create new Quiz <i class="fa-solid fa-plus"></i></a>
   </div>
-  {% endblock content_dashboard %}
+
 </body>
+{% endblock %}

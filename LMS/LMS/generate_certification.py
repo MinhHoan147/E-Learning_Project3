@@ -19,9 +19,8 @@ def cleanup_data():
 
 def generate_certificates(name, courseName, date, id):
     cur_path = os.getcwd()
-    # print("AAAAAAAAAAAAAAA", cur_path)
+
     path = cur_path + "\Media\certificate"
-    # print("BBBBBBBBBBBBBBB", path)
 
     # path = "Media/certificate"
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -65,7 +64,7 @@ def generate_certificates(name, courseName, date, id):
 def main():
     delete_old_data()
     # cleanup_data()
-    generate_certificates("Joe Joe", "Python for beginners", "2023-06-04", "1234")
+    generate_certificates("Pat N. Joffis", "Python for beginners", "2023-06-04", "1234")
 
 
 if __name__ == '__main__':

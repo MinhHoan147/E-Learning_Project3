@@ -17,6 +17,7 @@ from .settings import *
 from django.contrib.auth.decorators import login_required
 from LMS.forms import InstructorCreateCourseForm, InstructorCreateLessonForm, InstructorCreateQuizzForm, InstructorCreateVideoForm,LearnerSignUpForm, LearnerUserInfo, InstructorSignUpForm, InstructorUserInfo
 from .generate_certification import generate_certificates
+import vdocipher 
 
 # Create your views here.
 
@@ -35,6 +36,9 @@ def HOME(request):
     category = Categories.objects.all().order_by('id')[0:6]
     course = Course.objects.filter(status='PUBLISH').order_by('-id')
     instructor = Instructor.objects.all()
+    vdocipher.authenticate('duVqEvxX60rDRdbsrumTjRrBwk6KYyCMo4SJL9CR1D7iTSsbv6OxaNiXMSskXh3t')
+    video_id = '9707b93ea7fae3b9e65046c4d47f4b52'
+    video = vdocipher.Video(id=video_id).get()
     user = request.user
     if user.id != None:
         role = UserRole.objects.filter(user=request.user)
@@ -45,7 +49,8 @@ def HOME(request):
         'course': course,
         'user': user,
         'instructor': instructor,
-        'role': role
+        'role': role,
+        'video': video,
     }
     return candy.render(request, 'Main/home.html', context)
 
@@ -115,16 +120,13 @@ def SEARCH_COURSE(request):
     query = request.GET['query']
     category = Categories.get_all_category(Categories)
     course = Course.objects.filter(title__icontains=query)
-    try:
-        status = request.GET['status']
-        level = request.GET['level']
-        category = request.GET['category']
-    except:
-        return candy.render(request, 'search/search.html', context)
+    # try:
+    #     status = request.GET['status']
+    #     level = request.GET['level']
+    #     category = request.GET['category']
+    # except:
+    #     return candy.render(request, 'search/search.html', context)
 
-    print("STATUS: ", status)
-    print("LEVEL: ", level)
-    print("CATEGORY: ", category)
     context = {
         'course': course,
         'category': category,
@@ -134,7 +136,7 @@ def SEARCH_COURSE(request):
 def INSTRUCTOR_SEARCH_COURSE(request):
     query = request.GET['query']
     # levels = Level.objects.all()
-    status = ""
+    status = "All"
     # level = ""
     courses = Course.objects.filter(title__icontains=query)
     try:
@@ -143,7 +145,6 @@ def INSTRUCTOR_SEARCH_COURSE(request):
             status = "PUBLISH"
         if status == "Pending":
             status = "DRAFT"
-        print("STATUS: ", status)
     except:
         pass
     
@@ -171,22 +172,36 @@ def INSTRUCTOR_SEARCH_COURSE(request):
 
     context = {
         'courses': courses,
-        # 'levels' : levels
     }
     
     return candy.render(request, 'instructor/course_search.html', context)
 
 def INSTRUCTOR_SEARCH_LESSON(request):
     query = request.GET['query']
-    # category = Categories.get_all_category(Categories)
+    status = "All"
+    try:
+        status = request.GET['status']
+        if status == "Confirmed":
+            status = True
+        if status == "Pending":
+            status = False
+    except:
+        pass
+
     courses = Course.objects.filter(user=request.user)
+
     lessons = []
-    for course in courses:
-        temps = Lesson.objects.filter(name__icontains=query, course = course)
-        lessons.append(temps)
+    if status != "All":
+        for course in courses:
+            temps = Lesson.objects.filter(name__icontains=query, course=course, status=status)
+            lessons.append(temps)
+    else:
+        for course in courses:
+            temps = Lesson.objects.filter(name__icontains=query, course=course)
+            lessons.append(temps)
+    
     context = {
         'lessons': lessons,
-        # 'category': category,
     }
 
     return candy.render(request, 'instructor/lesson_search.html', context)
@@ -195,29 +210,52 @@ def INSTRUCTOR_SEARCH_QUIZZ(request):
     query = request.GET['query']
     # category = Categories.get_all_category(Categories)
     courses = Course.objects.filter(user=request.user)
+    status = "All"
+    try:
+        status = request.GET['status']
+        if status == "Confirmed":
+            status = True
+        if status == "Pending":
+            status = False
+    except:
+        pass
     quizzes = []
-    for course in courses:
-        temps = Quizzes.objects.filter(topic__icontains=query, course = course)
-        quizzes.append(temps)
-
+    if status != "All":
+        for course in courses:
+            temps = Quizzes.objects.filter(topic__icontains=query, course = course, status=status)
+            quizzes.append(temps)
+    else:
+        for course in courses:
+            temps = Quizzes.objects.filter(topic__icontains=query, course=course)
+            quizzes.append(temps)
     context = {
         'quizzes': quizzes,
-        # 'category': category,
     }
 
     return candy.render(request, 'instructor/quizz_search.html', context)
 
 def INSTRUCTOR_SEARCH_VIDEO_LECTURE(request):
     query = request.GET['query']
-    # category = Categories.get_all_category(Categories)
     courses = Course.objects.filter(user=request.user)
+    try:
+        status = request.GET['status']
+        if status == "Confirmed":
+            status = True
+        if status == "Pending":
+            status = False
+    except:
+        pass
     videos = []
-    for course in courses:
-        temps = Video.objects.filter(title__icontains=query, course = course)
-        videos.append(temps)
+    if status != "All":
+        for course in courses:
+            temps = Video.objects.filter(title__icontains=query, course = course, status=status)
+            videos.append(temps)
+    else:
+        for course in courses:
+            temps = Video.objects.filter(title__icontains=query, course=course)
+            videos.append(temps)
     context = {
         'videos': videos,
-        # 'category': category,
     }
 
     return candy.render(request, 'instructor/video_search.html', context)
@@ -254,24 +292,18 @@ def COURSE_DETAILS(request, slug):
         return redirect('404')
     action = request.GET.get('action')
 
-    user = User.objects.get(id=request.user.id)
-
     try:
+        user = User.objects.get(id=request.user.id)
         result = Result.objects.filter(user=request.user, course=course_id, passed=True)
         certificate = Certificate.objects.get(userID=user, courseID=course_id)
     except:
         pass
 
     date_text = datetime.datetime.now().strftime("%Y-%m-%d")
-    print("RESULT", result)
-    print("RESULT COUNT", result.count())
-    print("QUIZZES COUNT", quizzes.count())
-    print("CERTIFICATE", certificate)
     if result is not None and result.count() == quizzes.count() and certificate is None and course_id.has_certificate:
-        
         Certificate.objects.create(userID=user, courseID=course_id)
         certificate = Certificate.objects.get(userID=user, courseID=course_id)
-        generate_certificates(user.first_name+" " + user.last_name, course_id.title, date_text, certificate.id)
+        # generate_certificates(user.first_name+" " + user.last_name, course_id.title, date_text, certificate.id)
     
     context = {
         'courses': courses,
@@ -441,7 +473,6 @@ def QUIZ(request, course_slug, quizz_slug):
     else:
         return redirect('404')
     quiz = Quizzes.objects.get(slug=quizz_slug)
-    print("MY QUIZ: ", quiz)
     course_id = Course.objects.get(slug=course_slug)
     context = {
         'course': course_id,
@@ -739,7 +770,7 @@ def InstructorCreateLesson(request):
 
     else:  # no POST yet
         createLessonForm = InstructorCreateLessonForm()
-    return render(request, 'instructor/create_lesson_form.html', context=mydict)
+    return candy.render(request, 'instructor/create_lesson_form.html', context=mydict)
 
 @login_required
 def InstructorCreateQuiz(request):
@@ -842,11 +873,11 @@ def INSTRUCTOR_CHANGE_PASSWORD(request):
 def EDIT_NOTE(request):
     noteId = request.POST.get("noteId")
     if request.method == "POST":
-        note = request.POST.get("note")
-        Note.objects.filter(id=int(noteId)).update(body=note)
+        noteContent = request.POST.get("note")
+        Note.objects.filter(id=int(noteId)).update(body=noteContent, updated_at= datetime.datetime.now())
         Note.objects.filter(id=1).delete
-    #     print("AAAAAAAAA", note)
     return redirect('home')
+
 
 def CREATE_NOTE(request):
     # noteId = request.POST.get("noteId")
@@ -854,3 +885,12 @@ def CREATE_NOTE(request):
         note = request.POST.get("note")
         Note.objects.create(user=request.user, body=note)
     return redirect('home')
+
+def DELETE_NOTE(request):
+    noteId = request.POST.get("noteId")
+    current_url = request.get_full_path()
+    if request.method == "POST":
+        note = Note.objects.get(user=request.user,id=int(noteId))
+        note.delete()
+    return redirect(current_url)
+    

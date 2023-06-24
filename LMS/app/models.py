@@ -267,11 +267,11 @@ class Watch_Duration(models.Model):
 class Note(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     body = models.TextField(null=True, blank=True)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.body[0:50]
+        return self.body[0:50] + " " + str(self.updated)
     
 GENDER = (
     ("Male", "Male"),

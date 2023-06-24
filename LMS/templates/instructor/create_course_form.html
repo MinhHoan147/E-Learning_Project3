@@ -1,9 +1,9 @@
 {% extends 'instructor_base.html' %}
-{% block title %}Instructor Courses{% endblock %}
+{% block title %}Instructor Create Courses{% endblock %}
 {% block content %}
 {% load static %}
 {% load widget_tweaks %}
-<html lang="en">
+<body>  
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,9 +14,9 @@
     <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
-    <title>Instructor · Home</title>
+    <title>Instructor · Course</title>
 </head>
-<body>  
+
    
   <body>
 
@@ -30,7 +30,7 @@
     <form method="POST" style="color: #052d71 !important;">
       {% csrf_token %}
       <div class="container register-form" style="align-items: center;">
-        <div class="form" style="margin-top: 10%;">
+        <div class="form">
           <div class="note">
               <p style="font-size: 30px;">Fill in the details of the course</p>
           </div>

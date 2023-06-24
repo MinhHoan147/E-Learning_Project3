@@ -83,8 +83,8 @@
     </header>
 
      <!-- Modal -->
-     <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+     <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalTitle" aria-hidden="true"">
+        <div class="modal-dialog modal-lg" role="document" >
             <div class="modal-content">
                 <!-- All notes -->
                 <div class="collapse show" id="collapseAllNotes" data-bs-parent="#noteModal">
@@ -110,17 +110,20 @@
                         {% for note in notes %}
                             <p class="line-height-one" style="color: #183F63; font-size: 20px;">{{note.body}}</p>
                             <div>
-                                <p>{{note.updated}}</p> 
+                                <p>{{note.updated_at}}</p> 
                                 <!-- <a style="margin-right: 8px;" href="#"><i class="fa-solid fa-trash fa-sm"></i></a>  -->
-                                <a data-bs-toggle="collapse" href="#collapseEditNote{{note.id}}" role="button" aria-expanded="false" aria-controls="collapseEditNote"><i class="fa-solid fa-pen-to-square fa-sm"></i></a>
+                                <a style="margin-right: 10px;" data-bs-toggle="collapse" href="#collapseEditNote{{note.id}}" role="button" aria-expanded="false" aria-controls="collapseEditNote"><i class="fa-solid fa-pen-to-square fa-sm"></i></a>
+                                <a data-bs-toggle="collapse" href="#collapseDeleteNote{{note.id}}" role="button" aria-expanded="false" aria-controls="collapseDeleteNote"><i class="fa-sharp fa-solid fa-trash fa-sm"></i></a>
                             </div>
                             <hr style="border: 1px solid #183F63;">
                         {% endfor %}
                         </div>
-                    </div>
-                    <div class="modal-footer">
+                        <br>
                         <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseNewNote" role="button" aria-expanded="false" aria-controls="collapseNewNote">New note</a>
-                   </div>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseNewNote" role="button" aria-expanded="false" aria-controls="collapseNewNote">New note</a>
+                   </div> -->
                 </div>
 
                 <!-- Edit note -->
@@ -135,25 +138,60 @@
 
                         <div class="modal-body">
                              <!-- Form Edit -->
-                            <form class="mb-5" method="post" action="{% url 'edit_note' %}">
+                            <form class="mb-5" method="post" action="{% url 'edit_note'  %}">
                                 {% csrf_token %}
                                 <!-- Email -->
                                 <div class="form-group mb-5">
                                     <input type="hidden" name="noteId" value="{{note.id}}">
-                                    <textarea style="color: #183F63;" type="text" class="form-control" id="modalEditNote" name="note">{{note.body}}</textarea>
+                                    <textarea style="color: #183F63; height: 350px;" type="text" class="form-control" id="modalEditNote" name="note">{{note.body}}</textarea>
                                 </div>
 
                                 <button class="btn btn-primary" type="submit">
-                                    Save
+                                    Submit
                                 </button>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseAllNotes" role="button" aria-expanded="false" aria-controls="collapseAllNotes">Back</a>
                             </form>                        
                         </div>
-                        <div class="modal-footer">
+                        <!-- <div class="modal-footer">
                             <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseAllNotes" role="button" aria-expanded="false" aria-controls="collapseAllNotes">Back</a>
                             
-                        </div>
+                        </div> -->
                     </div>
                 {% endfor %}
+
+                <!-- Delete note -->
+                {% for note in notes %}
+                    <div class="collapse" id="collapseDeleteNote{{note.id}}" data-bs-parent="#noteModal">
+                        <div class="modal-header" style="background-color: #183F63;">
+                            <h1 class="modal-title" style="color: white;">Delete Note</h1>
+                            <button style="color: white; font-size: 35px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                             <!-- Form Edit -->
+                            <form class="mb-5" method="post" action="{% url 'delete_note' %}">
+                                {% csrf_token %}
+                                <!-- Email -->
+                                <div class="form-group mb-5">
+                                    <input type="hidden" name="noteId" value="{{note.id}}">
+                                    <h3>Do you want to delete this note completely?</h3>
+                                </div>
+
+                                <button class="btn btn-primary" type="submit">
+                                    Confirm
+                                </button>
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseAllNotes" role="button" aria-expanded="false" aria-controls="collapseAllNotes">Back</a>
+                            </form>                        
+                        </div>
+                        <!-- <div class="modal-footer">
+                            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseAllNotes" role="button" aria-expanded="false" aria-controls="collapseAllNotes">Back</a>
+                            
+                        </div> -->
+                    </div>
+                {% endfor %}
+
                 <!-- New note -->
                 <div class="collapse" id="collapseNewNote" data-bs-parent="#noteModal">
                     <div class="modal-header" style="background-color: #183F63;">
@@ -168,18 +206,19 @@
                             {% csrf_token %}
                             <!-- Email -->
                             <div class="form-group mb-5">
-                                <textarea style="color: #183F63;" type="text" class="form-control" id="modalEditNote" name="note">{{note}}</textarea>
+                                <textarea style="color: #183F63; height: 350px;" type="text" class="form-control" id="modalEditNote" name="note">{{note}}</textarea>
                             </div>
                             <button class="btn btn-primary" type="submit">
                                 Save
                             </button>
+                            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseAllNotes" role="button" aria-expanded="false" aria-controls="collapseAllNotes">Back</a>
                         </form> 
                     </div>
 
-                    <div class="modal-footer">
+                    <!-- <div class="modal-footer">
                         <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseAllNotes" role="button" aria-expanded="false" aria-controls="collapseAllNotes">Back</a>
                         
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
